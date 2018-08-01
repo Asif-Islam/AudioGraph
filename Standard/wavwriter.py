@@ -3,11 +3,19 @@ from scipy.io import wavfile
 from transformer import *
 
 # This module is responsible for writing a *.wav file.
-# The path to the wav filename must be provided
-# as an option.
+# 
+###########
+# Inputs #
+###########
+# DATA: The vector of samples to be written to the output file.
+# SAMPLING_RATE: The sampling rate of the audio file.
 #
-# Example configuration:
+###########
+# Configs #
+###########
+# FILENAME: The filename of the output audio wav file.
 #
+# Example AGDL configuration:#
 # WavWriter {
 #   inputs:
 #   {
@@ -44,6 +52,4 @@ class WavWriter(Transformer):
     def compute(self): 
         data = self.inputs[self.data_key]; 
         sampling_rate = self.inputs[self.sampling_rate_key];
-        print sampling_rate
-        print data
         wavfile.write(self.filename, sampling_rate, data);
