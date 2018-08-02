@@ -15,15 +15,14 @@ from transformer import *
 ###########
 # FILENAME: The filename of the output audio wav file.
 #
-# Example AGDL configuration:#
+# Example AGDL configuration:
 # WavWriter {
-#   inputs:
+#   inputs
 #   {
 #       <DATA> data
 #       <SAMPLING_RATE> sampling_rate
 #   }   
-#   outputs: {}   
-#   configs:
+#   configs
 #   {
 #       <FILENAME> "output.wav"    
 #   }
