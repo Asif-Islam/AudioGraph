@@ -26,7 +26,7 @@ from transformer import *
 #
 # Example configuration:
 #
-# PitchShifter {
+# VocoderResynthesizer {
 #   inputs
 #   {
 #       <INPUT_SAMPLES> input_samples
@@ -41,27 +41,25 @@ from transformer import *
 #   }
 # }
 
-class PitchResynthesizer(Transformer):
+class VocoderResynthesizer(Transformer):
     def __init__(self):
-        super(PitchResynthesizer, self).__init__()
+        super(VocoderResynthesizer, self).__init__()
 
     def initialize(self, configs):
         # Input Keys.
-        self.input_samples_key = "INPUT_SAMPLES";
+        self.input_samples_key = "INPUT_SAMPLES"
 
         # Output Keys.
-        self.output_samples_key = "OUTPUT_SAMPLES";
+        self.output_samples_key = "OUTPUT_SAMPLES"
 
         # Option Keys.
         self.fft_length_key = "FFT_LENGTH"
-        self.analysis_hopsize_key = "ANALYSIS_HOPSIZE";
-        self.synthesis_hopsize_key = "SYNTHESIS_HOPSIZE";
 
         # Local variables.
         self.fft_length = configs[self.fft_length_key]
 
         # Prepare ready inputs for graph.
-        self.ready_inputs[self.input_samples_key] = False;
+        self.ready_inputs[self.input_samples_key] = False
 
     def compute(self):
         # Retrieve inputs.
@@ -70,8 +68,8 @@ class PitchResynthesizer(Transformer):
         # Assume for now that the shape of the input samples is exactly
         # equal to the intended FFT length. 
         n = samples.shape[0]
-        assert n == self.fft_length;
-        assert self.fft_length % 2 == 0;
+        assert n == self.fft_length
+        assert self.fft_length % 2 == 0
 
         # FFT shift.
         output = np.concatenate([samples[n/2:], samples[0:n/2]])
@@ -79,7 +77,7 @@ class PitchResynthesizer(Transformer):
         # Apply a Hanning window to the samples as postprocessing.
         # TODO: Move hanning window function to a separate helper class.
         for i in range(0, n):
-            window_value = -0.5 * np.cos(2.0 * np.pi * float(i) / float(self.fft_length)) + 0.5;
-            output[i] = output[i] * window_value;
+            window_value = -0.5 * np.cos(2.0 * np.pi * float(i) / float(self.fft_length)) + 0.5
+            output[i] = output[i] * window_value
 
-        self.outputs[self.output_samples_key] = output;
+        self.outputs[self.output_samples_key] = output
